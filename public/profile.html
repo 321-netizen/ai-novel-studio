@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>个人中心｜AI 小说工具</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="experience-surface-page">
+    <div class="page-shell surface-shell">
+      <header class="surface-topbar">
+        <a class="surface-brand" href="/">NovelMind</a>
+        <nav class="surface-topbar-actions" aria-label="个人中心导航">
+          <a class="surface-pill-link" href="/user.html">创作台</a>
+          <a class="surface-pill-link" href="/billing.html">充值中心</a>
+          <a class="surface-pill-link" href="/">产品首页</a>
+          <a class="surface-pill-link admin-only-link" href="/admin.html">管理端</a>
+        </nav>
+      </header>
+
+      <section class="surface-hero hero-copy">
+        <p class="surface-kicker">PROFILE CENTER</p>
+        <h1>你的账号、作品和创作记录都放在这里。</h1>
+        <p class="surface-subtitle">个人中心偏向“我的项目”视角，方便你回看账号状态和最近保存的作品。</p>
+        <div id="profile-session-slot" class="surface-session-slot"></div>
+      </section>
+
+      <main class="surface-profile-grid">
+        <section class="surface-profile-main">
+          <div class="surface-stat-grid">
+            <article class="panel surface-stat-card">
+              <span>总作品数</span>
+              <strong id="profile-total">0</strong>
+            </article>
+            <article class="panel surface-stat-card">
+              <span>辅助型作品</span>
+              <strong id="profile-assist">0</strong>
+            </article>
+            <article class="panel surface-stat-card">
+              <span>自动型作品</span>
+              <strong id="profile-auto">0</strong>
+            </article>
+            <article class="panel surface-stat-card">
+              <span>累计字数</span>
+              <strong id="profile-words">0</strong>
+            </article>
+          </div>
+
+          <section class="panel surface-table-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>最近作品</h2>
+                <p>只显示当前账号保存的作品。</p>
+              </div>
+            </div>
+            <div id="profile-works" class="admin-works">
+              <p class="empty-copy">还没有作品。</p>
+            </div>
+          </section>
+
+        </section>
+
+        <aside class="surface-profile-side">
+          <section class="panel surface-mini-stack">
+            <article class="surface-mini-card">
+              <span>当前账号</span>
+              <strong id="profile-email">正在读取…</strong>
+              <small id="profile-role">请稍候</small>
+            </article>
+            <article class="surface-mini-card">
+              <span>加入时间</span>
+              <strong id="profile-created">--</strong>
+              <small>你的账号创建时间</small>
+            </article>
+            <article class="surface-mini-card">
+              <span>当前余额</span>
+              <strong id="profile-balance">0 星币</strong>
+              <small id="profile-subscription">基础版 · 可在下方提交充值申请</small>
+            </article>
+            <article class="surface-mini-card">
+              <span>累计充值</span>
+              <strong id="profile-purchased">0 星币</strong>
+              <small>后台确认到账后会累计到这里</small>
+            </article>
+          </section>
+
+          <section class="panel surface-account-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>账号信息</h2>
+                <p id="profile-side-meta">这里会显示当前登录信息。</p>
+              </div>
+            </div>
+            <div class="profile-card-list">
+              <article class="profile-info-card">
+                <span>邮箱</span>
+                <strong id="profile-side-email">--</strong>
+              </article>
+              <article class="profile-info-card">
+                <span>身份</span>
+                <strong id="profile-side-role">--</strong>
+              </article>
+              <article class="profile-info-card">
+                <span>最近创作时间</span>
+                <strong id="profile-latest-created">--</strong>
+              </article>
+            </div>
+            <div class="result-actions surface-account-actions">
+              <a class="secondary-btn" href="/user.html">继续创作</a>
+              <button id="profile-logout-btn" class="ghost-btn" type="button">退出登录</button>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="/profile.js"></script>
+  </body>
+</html>

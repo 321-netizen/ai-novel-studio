@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户端｜AI 小说工具</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="user-experience-page">
+    <div class="page-shell experience-shell">
+      <header class="experience-topbar">
+        <a class="experience-brand" href="/">NovelMind</a>
+        <div class="experience-topbar-actions">
+          <a class="experience-pill-link" href="/profile.html">个人中心</a>
+          <a class="experience-pill-link" href="/billing.html">充值中心</a>
+          <a class="experience-pill-link" href="/">产品首页</a>
+          <a class="experience-pill-link admin-only-link" href="/admin.html">管理端</a>
+        </div>
+      </header>
+
+      <section class="experience-hero hero-copy">
+        <p class="experience-kicker">AI STORY STUDIO</p>
+        <h1>HI, I'M NOVELMIND</h1>
+        <p class="experience-subtitle">轻松写一句话，我来帮你构建有爽点、有节奏、能直接阅读的小说世界。</p>
+        <div id="session-slot" class="experience-session-slot"></div>
+      </section>
+
+      <main class="experience-main">
+        <section class="experience-stage">
+          <div class="experience-edition-bar">
+            <div class="experience-edition-copy">
+              <span>创作版本</span>
+              <p id="edition-note">基础版更轻量，适合日常出稿；专业版会开启小说记忆，更适合长篇连载。</p>
+            </div>
+            <div class="experience-edition-switch" aria-label="创作版本切换">
+              <button class="edition-tab active" data-edition="basic" type="button">
+                <strong>基础版</strong>
+                <small>不带小说记忆</small>
+              </button>
+              <button class="edition-tab" data-edition="pro" type="button">
+                <strong>专业版</strong>
+                <small>带小说记忆</small>
+              </button>
+            </div>
+          </div>
+
+          <div class="experience-mode-head">
+            <span>创作模式</span>
+            <p>先选你要的方式：灵感辅助适合已有素材，一句话成书适合直接生成整本小说。</p>
+          </div>
+          <div class="experience-stage-tabs mode-switch experience-mode-switch" aria-label="创作模式">
+            <button class="mode-tab" data-mode-target="assist">灵感辅助</button>
+            <button class="mode-tab active" data-mode-target="auto">一句话成书</button>
+          </div>
+
+          <div class="experience-stage-body">
+            <form id="auto-form" class="mode-panel experience-panel experience-compose-panel active" data-mode-panel="auto">
+              <div class="experience-stage-head">
+                <span>故事梗概和人物小传</span>
+                <span>整本小说输出</span>
+              </div>
+
+              <div class="experience-input-shell">
+                <label class="experience-main-input">
+                  <textarea
+                    name="premise"
+                    rows="8"
+                    placeholder="请输入一句话设定。例如：落魄千金为了查清母亲死因，伪装成家教住进仇人家里，却意外卷入一场更大的豪门阴谋。"
+                    required
+                  ></textarea>
+                </label>
+
+                <div class="experience-example">
+                  <strong>示例：</strong>
+                  <button class="experience-example-chip" type="button" data-fill-prompt="一个被退婚的相府嫡女，意外觉醒读心能力，从棋子一步步变成掌局者。">
+                    古言逆袭
+                  </button>
+                  <button class="experience-example-chip" type="button" data-fill-prompt="社恐程序员继承了一家深夜只对鬼怪营业的便利店，从此被迫兼职解决都市怪谈。">
+                    都市奇幻
+                  </button>
+                  <button class="experience-example-chip" type="button" data-fill-prompt="娱乐圈十八线女演员和顶流影帝被迫参加一档恋综，却发现彼此都在调查同一个失踪案件。">
+                    现言悬疑
+                  </button>
+                </div>
+
+                <div class="experience-quick-row">
+                  <label>
+                    <span>题材</span>
+                    <input name="genre" placeholder="古言 / 现言 / 悬疑 / 幻想" />
+                  </label>
+                  <label>
+                    <span>风格</span>
+                    <input name="style" placeholder="强节奏 / 甜虐 / 电影感" />
+                  </label>
+                  <label>
+                    <span>受众</span>
+                    <input name="audience" placeholder="女频 / 男频 / 短篇读者" />
+                  </label>
+                </div>
+
+                <div class="experience-quick-row experience-length-row">
+                  <label>
+                    <span>章节数</span>
+                    <input name="chapterCount" type="number" min="1" max="20" value="4" />
+                  </label>
+                  <label>
+                    <span>每章字数</span>
+                    <input name="chapterLength" type="number" min="300" max="3000" value="800" />
+                  </label>
+                  <label>
+                    <span>叙事视角</span>
+                    <input name="pov" value="第三人称近距离" placeholder="如：第一人称 / 第三人称" />
+                  </label>
+                </div>
+
+                <p class="experience-inline-note">建议先用 3 到 5 章、每章 600 到 1000 字，出稿后会更好修改。</p>
+
+                <details class="experience-advanced">
+                  <summary>展开高级设定</summary>
+                  <div class="experience-advanced-grid">
+                    <label>
+                      <span>世界观</span>
+                      <textarea
+                        name="world"
+                        rows="4"
+                        placeholder="补充时代背景、规则、势力关系、力量体系。"
+                      ></textarea>
+                    </label>
+                    <label>
+                      <span>角色信息</span>
+                      <textarea
+                        name="characters"
+                        rows="4"
+                        placeholder="输入主角、配角、关系链、秘密、目标。"
+                      ></textarea>
+                    </label>
+                    <label>
+                      <span>剧情要求</span>
+                      <textarea
+                        name="plotRequirements"
+                        rows="4"
+                        placeholder="例如：先婚后爱、真假身份反转、高潮密集、结尾留钩子。"
+                      ></textarea>
+                    </label>
+                    <label>
+                      <span>限制条件</span>
+                      <input name="constraints" placeholder="如：不要 BE、不写重口、感情线偏克制" />
+                    </label>
+                  </div>
+                </details>
+
+                <div class="experience-actions">
+                  <a class="secondary-btn experience-secondary-link" href="#saved-works">我的项目</a>
+                  <button class="primary-btn experience-generate-btn" type="submit">一句话生成整本小说</button>
+                </div>
+              </div>
+            </form>
+
+            <form id="assist-form" class="mode-panel experience-panel experience-compose-panel" data-mode-panel="assist">
+              <div class="experience-stage-head">
+                <span>灵感辅助创作</span>
+                <span>续写 / 扩写 / 改写 / 大纲</span>
+              </div>
+
+              <div class="experience-input-shell">
+                <div class="experience-assist-row">
+                  <label>
+                    <span>操作类型</span>
+                    <select name="action">
+                      <option value="continue">续写</option>
+                      <option value="expand">扩写</option>
+                      <option value="rewrite">改写</option>
+                      <option value="outline">大纲生成</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>题材</span>
+                    <input name="genre" placeholder="古言、悬疑、都市异能" />
+                  </label>
+                  <label>
+                    <span>风格</span>
+                    <input name="style" placeholder="克制冷峻、网文强节奏" />
+                  </label>
+                </div>
+
+                <label class="experience-main-input">
+                  <textarea
+                    name="sourceText"
+                    rows="8"
+                    placeholder="把已有片段、设定、人物小传、剧情草稿贴进来，我帮你继续往下写。"
+                    required
+                  ></textarea>
+                </label>
+
+                <div class="experience-assist-row">
+                  <label>
+                    <span>目标篇幅</span>
+                    <input name="targetLength" placeholder="如：800 字、3 章、长纲" />
+                  </label>
+                  <label class="experience-wide-label">
+                    <span>创作方向</span>
+                    <textarea
+                      name="direction"
+                      rows="3"
+                      placeholder="说明想推进什么剧情、突出什么情绪、保留哪些伏笔。"
+                    ></textarea>
+                  </label>
+                </div>
+
+                <details class="experience-advanced">
+                  <summary>展开更多控制项</summary>
+                  <div class="experience-advanced-grid">
+                    <label>
+                      <span>额外约束</span>
+                      <textarea
+                        name="constraints"
+                        rows="3"
+                        placeholder="如：不要 OOC、第一人称、保留某句设定。"
+                      ></textarea>
+                    </label>
+                  </div>
+                </details>
+
+                <div class="experience-actions">
+                  <a class="secondary-btn experience-secondary-link" href="#saved-works">查看我的作品</a>
+                  <button class="primary-btn experience-generate-btn" type="submit">生成辅助内容</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="experience-content-grid">
+          <section class="panel experience-result-panel">
+            <div class="experience-card-head">
+              <div>
+                <h2>生成结果</h2>
+                <p id="result-meta">提交后会在这里显示完整内容。</p>
+              </div>
+              <div class="experience-card-meta">
+                <div id="edition-chip" class="edition-chip basic">当前为基础版</div>
+                <div id="config-chip" class="config-chip">正在检查模型连接状态…</div>
+                <div id="status-box" class="status-box">等待输入</div>
+              </div>
+            </div>
+            <div class="result-toolbar experience-toolbar">
+              <div class="result-toolbar-head">
+                <span>作品操作</span>
+                <small>生成完成后即可保存、导出、续写、改写或继续下一章</small>
+              </div>
+              <div class="result-actions result-actions-grid">
+                <button id="save-btn" class="secondary-btn action-btn" type="button" disabled>保存作品</button>
+                <button id="export-btn" class="secondary-btn action-btn" type="button" disabled>导出 TXT</button>
+                <button id="next-chapter-btn" class="secondary-btn action-btn" type="button" disabled>继续生成下一章</button>
+                <button id="continue-result-btn" class="secondary-btn action-btn" type="button" disabled>基于当前结果续写</button>
+                <button id="rewrite-result-btn" class="secondary-btn action-btn" type="button" disabled>把当前结果带去改写</button>
+              </div>
+            </div>
+            <pre id="result-box" class="result-box">输入一句话设定后，这里会输出完整小说内容。</pre>
+          </section>
+
+          <aside class="experience-side-column">
+            <section class="panel experience-info-panel">
+              <div class="experience-mini-card">
+                <span>当前模型</span>
+                <strong id="workspace-provider">正在检查模型…</strong>
+                <small id="workspace-model">请稍候</small>
+              </div>
+              <div class="experience-mini-card">
+                <span>我的作品库</span>
+                <strong id="workspace-count">0 篇</strong>
+                <small>保存后会同步显示在下方项目区</small>
+              </div>
+            </section>
+
+            <section id="saved-works" class="panel experience-library-panel">
+              <div class="experience-card-head">
+                <div>
+                  <h2>个人项目</h2>
+                  <p>你保存过的小说都会留在这里。</p>
+                </div>
+              </div>
+              <div id="saved-list" class="saved-list">
+                <p class="empty-copy">还没有保存过作品。</p>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <div id="edition-modal" class="edition-modal" aria-hidden="true">
+      <div class="edition-modal-backdrop" data-close-edition-modal="true"></div>
+      <div class="edition-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="edition-modal-title">
+        <button id="edition-modal-close" class="edition-modal-close" type="button" aria-label="关闭弹窗">×</button>
+        <p class="edition-modal-kicker">PRO UPGRADE</p>
+        <h2 id="edition-modal-title">开启专业版小说记忆</h2>
+        <p id="edition-modal-price" class="edition-modal-price">专业版建议售价：79 元 / 月</p>
+        <p id="edition-modal-copy" class="edition-modal-copy">
+          专业版更适合长篇连载。系统会自动记录人物状态、剧情时间线、关键道具和未回收伏笔，后续续写时不容易忘前文。
+        </p>
+        <div class="edition-modal-grid">
+          <div class="edition-modal-card">
+            <strong>基础版</strong>
+            <span>轻量出稿，适合短篇、试题材、低价套餐。</span>
+            <small>不带小说记忆</small>
+          </div>
+          <div class="edition-modal-card pro">
+            <strong>专业版</strong>
+            <span>更适合长篇稳定生成、人物追踪和伏笔延续。</span>
+            <small>带小说记忆</small>
+          </div>
+        </div>
+        <ul class="edition-modal-points">
+          <li>自动整理人物状态和关系变化</li>
+          <li>自动记录剧情推进和章节时间线</li>
+          <li>自动保留关键线索、道具和未回收伏笔</li>
+        </ul>
+        <p id="edition-modal-footnote" class="edition-modal-footnote">点击“立即开通专业版”后，会先提交开通申请，由管理员手动为你的账号开通。</p>
+        <div class="edition-modal-actions">
+          <button id="edition-modal-cancel" class="secondary-btn" type="button">先用基础版</button>
+          <button id="edition-modal-confirm" class="primary-btn" type="button">继续体验专业版</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/user.js"></script>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>充值中心｜AI 小说工具</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="experience-surface-page">
+    <div class="page-shell surface-shell">
+      <header class="surface-topbar">
+        <a class="surface-brand" href="/">NovelMind</a>
+        <nav class="surface-topbar-actions" aria-label="充值中心导航">
+          <a class="surface-pill-link" href="/user.html">创作台</a>
+          <a class="surface-pill-link" href="/profile.html">个人中心</a>
+          <a class="surface-pill-link" href="/">产品首页</a>
+          <a class="surface-pill-link admin-only-link" href="/admin.html">管理端</a>
+        </nav>
+      </header>
+
+      <section class="surface-hero hero-copy">
+        <p class="surface-kicker">BILLING CENTER</p>
+        <h1>余额、套餐和充值记录都放在这里。</h1>
+        <p class="surface-subtitle">先提交充值申请，等你确认收款后，我再在后台给这个账号加余额。</p>
+        <div id="billing-session-slot" class="surface-session-slot"></div>
+      </section>
+
+      <section class="billing-balance-strip panel">
+        <div class="billing-balance-icon" aria-hidden="true">
+          <div class="billing-balance-icon-core">S</div>
+        </div>
+        <div class="billing-balance-metric">
+          <span>余额</span>
+          <strong id="billing-summary-balance">0</strong>
+        </div>
+        <div class="billing-balance-divider" aria-hidden="true"></div>
+        <div class="billing-balance-metric">
+          <span>消耗</span>
+          <strong id="billing-summary-consumed">0</strong>
+        </div>
+        <button id="billing-scroll-recharge-btn" class="billing-balance-action" type="button">充值</button>
+      </section>
+
+      <main class="surface-profile-grid">
+        <section class="surface-profile-main">
+          <section id="billing-packages-section" class="panel surface-table-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>充值中心</h2>
+                <p>选择你要的套餐后提交申请，后台确认到账后会自动把星币充到当前账号。</p>
+              </div>
+            </div>
+            <div id="billing-packages" class="billing-package-grid">
+              <p class="empty-copy">正在加载充值套餐…</p>
+            </div>
+            <div class="surface-card-head surface-subhead">
+              <div>
+                <h2>充值申请记录</h2>
+                <p>这里只显示当前账号最近提交的充值申请。</p>
+              </div>
+            </div>
+            <div id="billing-requests" class="billing-request-list">
+              <p class="empty-copy">你还没有提交过充值申请。</p>
+            </div>
+          </section>
+        </section>
+
+        <aside class="surface-profile-side">
+          <section class="panel surface-mini-stack">
+            <article class="surface-mini-card">
+              <span>付款联系 QQ</span>
+              <strong id="billing-contact-qq">2133275641</strong>
+              <small id="billing-contact-note">提交充值申请后，请联系这个 QQ，并备注你的注册邮箱。</small>
+            </article>
+            <article class="surface-mini-card">
+              <span>当前账号</span>
+              <strong id="billing-email">正在读取…</strong>
+              <small id="billing-role">请稍候</small>
+            </article>
+            <article class="surface-mini-card">
+              <span>当前余额</span>
+              <strong id="billing-balance">0 星币</strong>
+              <small id="billing-subscription">基础版 · 可提交充值申请</small>
+            </article>
+            <article class="surface-mini-card">
+              <span>累计充值</span>
+              <strong id="billing-purchased">0 星币</strong>
+              <small>后台确认到账后会累计到这里</small>
+            </article>
+          </section>
+
+          <section class="panel surface-account-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>付款说明</h2>
+                <p id="billing-side-meta">提交充值申请后，请联系下方 QQ 完成付款，我确认到账后会给你加星币。</p>
+              </div>
+            </div>
+            <div class="profile-card-list">
+              <article class="profile-info-card">
+                <span>联系 QQ</span>
+                <strong id="billing-side-email">2133275641</strong>
+              </article>
+              <article class="profile-info-card">
+                <span>付款备注</span>
+                <strong id="billing-side-role">注册邮箱</strong>
+              </article>
+              <article class="profile-info-card">
+                <span>推荐流程</span>
+                <strong id="billing-created">先申请再联系</strong>
+              </article>
+            </div>
+            <div class="result-actions surface-account-actions">
+              <button id="billing-copy-qq-btn" class="secondary-btn" type="button">复制 QQ 号</button>
+              <a class="secondary-btn" href="/user.html">继续创作</a>
+              <button id="billing-logout-btn" class="ghost-btn" type="button">退出登录</button>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="/billing.js"></script>
+  </body>
+</html>

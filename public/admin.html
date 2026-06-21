@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>管理端｜AI 小说工具</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="experience-surface-page">
+    <div class="page-shell surface-shell">
+      <header class="surface-topbar">
+        <a class="surface-brand" href="/">NovelMind</a>
+        <nav class="surface-topbar-actions" aria-label="后台导航">
+          <a class="surface-pill-link" href="/user.html">创作台</a>
+          <a class="surface-pill-link" href="/profile.html">个人中心</a>
+          <a class="surface-pill-link" href="/">产品首页</a>
+        </nav>
+      </header>
+
+      <section class="surface-hero hero-copy">
+        <p class="surface-kicker">ADMIN CONSOLE</p>
+        <h1>后台总览、作品预览和内容清理。</h1>
+        <p class="surface-subtitle">这里只给管理员使用，负责查看作品规模、内容来源和单篇作品详情。</p>
+        <div id="admin-session-slot" class="surface-session-slot"></div>
+      </section>
+
+      <main class="surface-admin-grid">
+        <section class="surface-admin-main">
+          <div class="surface-stat-grid">
+            <article class="panel surface-stat-card">
+              <span>总作品数</span>
+              <strong id="stat-total">0</strong>
+            </article>
+            <article class="panel surface-stat-card">
+              <span>辅助型作品</span>
+              <strong id="stat-assist">0</strong>
+            </article>
+            <article class="panel surface-stat-card">
+              <span>自动型作品</span>
+              <strong id="stat-auto">0</strong>
+            </article>
+            <article class="panel surface-stat-card">
+              <span>累计字数</span>
+              <strong id="stat-words">0</strong>
+            </article>
+          </div>
+
+          <section class="panel surface-table-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>作品列表</h2>
+                <p>点击右侧按钮即可预览或删除。</p>
+              </div>
+            </div>
+            <div id="admin-works" class="admin-works">
+              <p class="empty-copy">暂无作品。</p>
+            </div>
+          </section>
+
+          <section class="panel surface-table-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>用户与专业版权限</h2>
+                <p>你可以在这里查看升级申请，并手动给用户开通或关闭专业版。</p>
+              </div>
+            </div>
+            <div id="admin-users" class="admin-users">
+              <p class="empty-copy">暂无用户。</p>
+            </div>
+          </section>
+
+          <section class="panel surface-table-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>充值申请</h2>
+                <p>用户提交充值申请后，会出现在这里。你确认收款后点击“确认到账”即可给用户加余额。</p>
+              </div>
+            </div>
+            <div id="admin-recharge-requests" class="admin-users">
+              <p class="empty-copy">暂无充值申请。</p>
+            </div>
+          </section>
+        </section>
+
+        <aside class="surface-admin-side">
+          <section class="panel surface-mini-stack">
+            <article class="surface-mini-card">
+              <span>当前模型</span>
+              <strong id="admin-provider">正在检查模型…</strong>
+              <small id="admin-model">请稍候</small>
+            </article>
+            <article class="surface-mini-card">
+              <span>作品规模</span>
+              <strong id="admin-count">0 篇作品</strong>
+              <small id="admin-words">0 字</small>
+            </article>
+          </section>
+
+          <section class="panel surface-preview-panel">
+            <div class="surface-card-head">
+              <div>
+                <h2>作品预览</h2>
+                <p id="admin-preview-meta">选择一篇作品后显示详情。</p>
+              </div>
+            </div>
+            <pre id="admin-preview" class="result-box admin-preview">这里会显示作品正文和输入摘要。</pre>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="/admin.js"></script>
+  </body>
+</html>
