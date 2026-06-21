@@ -9,8 +9,9 @@ loadEnvFile(path.join(__dirname, ".env"));
 
 const PORT = Number(process.env.PORT || 3000);
 const PUBLIC_DIR = path.join(__dirname, "public");
-const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, "data"));
-const DATA_FILE = path.join(DATA_DIR, "app-data.json");
+const PREFERRED_DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, "data"));
+const FALLBACK_DATA_DIR = path.join(__dirname, "data");
+let resolvedDataDir = null;
 const SESSION_COOKIE = "novel_sid";
 const API_PROVIDER = (process.env.API_PROVIDER || "openai").toLowerCase();
 const API_BASE_URL = normalizeBaseUrl(
@@ -888,21 +889,46 @@ function getNowIso() {
 }
 
 async function ensureDataFile() {
-  await fs.promises.mkdir(DATA_DIR, { recursive: true });
+  if (!resolvedDataDir) {
+    const candidateDirs = [PREFERRED_DATA_DIR];
+    if (FALLBACK_DATA_DIR !== PREFERRED_DATA_DIR) {
+      candidateDirs.push(FALLBACK_DATA_DIR);
+    }
+
+    let lastError = null;
+    for (const candidateDir of candidateDirs) {
+      try {
+        await fs.promises.mkdir(candidateDir, { recursive: true });
+        await fs.promises.access(candidateDir, fs.constants.W_OK);
+        resolvedDataDir = candidateDir;
+        break;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    if (!resolvedDataDir) {
+      throw lastError || new Error("No writable data directory available");
+    }
+  }
+
+  const dataFile = path.join(resolvedDataDir, "app-data.json");
   try {
-    await fs.promises.access(DATA_FILE);
+    await fs.promises.access(dataFile);
   } catch (error) {
-      await fs.promises.writeFile(
-      DATA_FILE,
+    await fs.promises.writeFile(
+      dataFile,
       JSON.stringify({ users: [], sessions: [], works: [], emailCodes: [], rechargeRequests: [] }, null, 2),
       "utf8"
     );
   }
+
+  return dataFile;
 }
 
 async function readData() {
-  await ensureDataFile();
-  const raw = await fs.promises.readFile(DATA_FILE, "utf8");
+  const dataFile = await ensureDataFile();
+  const raw = await fs.promises.readFile(dataFile, "utf8");
   const parsed = JSON.parse(raw || '{"users":[],"sessions":[],"works":[],"emailCodes":[],"rechargeRequests":[]}');
   return {
     users: Array.isArray(parsed.users) ? parsed.users : [],
@@ -914,8 +940,8 @@ async function readData() {
 }
 
 async function writeData(data) {
-  await ensureDataFile();
-  await fs.promises.writeFile(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+  const dataFile = await ensureDataFile();
+  await fs.promises.writeFile(dataFile, JSON.stringify(data, null, 2), "utf8");
 }
 
 function buildLegacyEmail(rawValue, fallbackPrefix) {
@@ -2058,11 +2084,12 @@ async function serveProtectedPage(req, res, pathname) {
 
 async function routeApi(req, res, url) {
   if (req.method === "GET" && url.pathname === "/healthz") {
+    await ensureDataFile();
     sendJson(res, 200, {
       status: "ok",
       provider: API_PROVIDER,
       model: OPENAI_MODEL,
-      dataDir: DATA_DIR
+      dataDir: resolvedDataDir
     });
     return true;
   }
@@ -2200,7 +2227,7 @@ Promise.resolve()
   .then(() => {
     server.listen(PORT, () => {
       console.log(`AI Novel Studio is running on port ${PORT}`);
-      console.log(`Data directory: ${DATA_DIR}`);
+      console.log(`Data directory: ${resolvedDataDir}`);
     });
   })
   .catch((error) => {
