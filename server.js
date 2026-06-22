@@ -597,7 +597,8 @@ async function callOpenAIResponses({ systemPrompt, userPrompt }) {
     })
   });
 
-  const responseJson = await response.json().catch(() => ({}));
+  const responseText = await response.text();
+  const responseJson = responseText ? JSON.parse(responseText) : {};
   if (!response.ok) {
     const message = responseJson.error && responseJson.error.message
       ? responseJson.error.message
@@ -630,7 +631,8 @@ async function callOpenAICompatibleChat({ systemPrompt, userPrompt }) {
     })
   });
 
-  const responseJson = await response.json().catch(() => ({}));
+  const responseText = await response.text();
+  const responseJson = responseText ? JSON.parse(responseText) : {};
   if (!response.ok) {
     const message = responseJson.error && responseJson.error.message
       ? responseJson.error.message
@@ -640,7 +642,7 @@ async function callOpenAICompatibleChat({ systemPrompt, userPrompt }) {
 
   const text = extractChatCompletionText(responseJson);
   if (!text) {
-    throw new Error("Model returned an empty response");
+    throw new Error(`Model returned an empty response${responseText ? `: ${responseText.slice(0, 240)}` : ""}`);
   }
 
   return text;
@@ -1850,7 +1852,10 @@ async function handleGenerate(req, res) {
 
     sendJson(res, 200, result);
   } catch (error) {
-    sendJson(res, 500, { error: error.message || "Unexpected server error" });
+    sendJson(res, 500, {
+      error: error.message || "Unexpected server error",
+      detail: error && error.stack ? String(error.stack).split("\n").slice(0, 3).join(" | ") : null
+    });
   }
 }
 

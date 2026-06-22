@@ -259,7 +259,7 @@ async function submitPayload(payload, triggerButton, pendingText) {
   } catch (error) {
     setStatus("生成失败");
     setResult(
-      `请求失败：${error.message}\n\n请检查服务端日志，或确认登录状态、API Key、模型名与服务地址是否配置正确。`,
+      `请求失败：${error.message}\n\n如果是 DeepSeek 返回错误，通常是 API Key、模型名、余额、限流或接口格式问题。\n如果只是空响应，可能是模型临时没返回内容。`,
       "接口返回错误。"
     );
   } finally {
