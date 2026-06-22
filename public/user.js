@@ -61,6 +61,20 @@ function setResult(text, meta) {
   resultMeta.textContent = meta;
 }
 
+function redirectToLogin(reason = "登录状态已失效，请重新登录。") {
+  window.alert(reason);
+  window.location.href = "/auth.html";
+}
+
+async function parseJsonResponse(response) {
+  const data = await response.json().catch(() => ({}));
+  if (response.status === 401 || data.error === "请先登录") {
+    redirectToLogin();
+    throw new Error("请先登录");
+  }
+  return data;
+}
+
 function getEditionLabel(edition) {
   return edition === "pro" ? "专业版" : "基础版";
 }
@@ -239,7 +253,7 @@ async function submitPayload(payload, triggerButton, pendingText) {
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    const data = await parseJsonResponse(response);
     if (!response.ok) {
       throw new Error(data.error || "请求失败");
     }
@@ -332,7 +346,7 @@ async function saveCurrentWork() {
       })
     });
 
-    const data = await response.json();
+    const data = await parseJsonResponse(response);
     if (!response.ok) {
       throw new Error(data.error || "保存失败");
     }
@@ -412,7 +426,7 @@ async function loadSavedWorkDetail(workId) {
 
   try {
     const response = await fetch(`/api/works/${encodeURIComponent(workId)}`);
-    const data = await response.json();
+    const data = await parseJsonResponse(response);
     if (!response.ok) {
       throw new Error(data.error || "读取作品详情失败");
     }
@@ -462,7 +476,7 @@ async function deleteSavedWork(workId) {
     const response = await fetch(`/api/works/${encodeURIComponent(workId)}`, {
       method: "DELETE"
     });
-    const data = await response.json();
+    const data = await parseJsonResponse(response);
     if (!response.ok) {
       throw new Error(data.error || "删除失败");
     }
@@ -486,16 +500,13 @@ async function deleteSavedWork(workId) {
 async function loadSavedWorks() {
   try {
     const response = await fetch("/api/works");
-    const data = await response.json();
+    const data = await parseJsonResponse(response);
     if (!response.ok) {
       throw new Error(data.error || "读取失败");
     }
     renderSavedWorks(data.works || []);
   } catch (error) {
-    if (error.message.includes("请先登录")) {
-      window.location.href = "/auth.html";
-      return;
-    }
+    if (error.message.includes("请先登录")) return;
     savedList.innerHTML = '<p class="empty-copy">读取作品库失败。</p>';
   }
 }
@@ -638,7 +649,7 @@ editionModalConfirm?.addEventListener("click", () => {
     method: "POST"
   })
     .then(async (response) => {
-      const data = await response.json();
+      const data = await parseJsonResponse(response);
       if (!response.ok) {
         throw new Error(data.error || "提交开通申请失败");
       }
